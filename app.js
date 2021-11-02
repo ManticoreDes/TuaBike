@@ -57,10 +57,10 @@ hero_slide.addEventListener("mouseleave", () => (hero_slide_play = true));
 setTimeout(() => hero_slide_items[0].classList.add("active"), 200);
 
 // auto slide
-// setInterval(() => {
-// 	if (!hero_slide_play) return;
-// 	nextSlide();
-// }, 5000);
+setInterval(() => {
+	if (!hero_slide_play) return;
+	nextSlide();
+}, 5000);
 
 // change header style when scrolling
 window.addEventListener("scroll", () => {
@@ -70,3 +70,34 @@ window.addEventListener("scroll", () => {
 		header.classList.remove("shrink");
 	}
 });
+
+// element show on scroll
+let scroll =
+	window.requestAnimationFrame ||
+	function (callback) {
+		window.setTimeout(callback, 1000 / 60);
+	};
+
+let el_to_show = document.querySelectorAll(".show-on-scroll");
+
+isElInViewPort = (el) => {
+	let rect = el.getBoundingClientRect();
+
+	let distance = 200;
+
+	return (
+		rect.top <=
+		(window.innerHeight - distance ||
+			document.documentElement.clientHeight - distance)
+	);
+};
+
+loop = () => {
+	el_to_show.forEach((el) => {
+		if (isElInViewPort(el)) el.classList.add("show");
+	});
+
+	scroll(loop);
+};
+
+loop();
